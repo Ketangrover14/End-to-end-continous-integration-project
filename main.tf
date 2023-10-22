@@ -75,7 +75,7 @@ resource "aws_s3_bucket" "example" {
 }
 
 
-resource "aws_instance" "server1" {
+resource "aws_instance" "webserver1" {
   ami                    = "ami-0261755bbcb8c4a84"
   instance_type          = "t2.micro"
   vpc_security_group_ids = [aws_security_group.webSg.id]
@@ -83,7 +83,7 @@ resource "aws_instance" "server1" {
   user_data              = base64encode(file("userdata.sh"))
 }
 
-resource "aws_instance" "server2" {
+resource "aws_instance" "webserver2" {
   ami                    = "ami-0261755bbcb8c4a84"
   instance_type          = "t2.micro"
   vpc_security_group_ids = [aws_security_group.webSg.id]
@@ -119,13 +119,13 @@ resource "aws_lb_target_group" "tg" {
 
 resource "aws_lb_target_group_attachment" "attach1" {
   target_group_arn = aws_lb_target_group.tg.arn
-  target_id        = aws_instance.server1.id
+  target_id        = aws_instance.webserver1.id
   port             = 80
 }
 
 resource "aws_lb_target_group_attachment" "attach2" {
   target_group_arn = aws_lb_target_group.tg.arn
-  target_id        = aws_instance.server2.id
+  target_id        = aws_instance.webserver2.id
   port             = 80
 }
 
